@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Saya - EduClass</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --dark-color: #1f2937;
+            --dark-light: #374151;
+            --gray-color: #6b7280;
+            --gray-light: #9ca3af;
+            --light-color: #f3f4f6;
+            --white: #ffffff;
+            --border-radius: 20px;
+            --border-radius-sm: 12px;
+            --box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.02);
+            --box-shadow-lg: 0 25px 50px -12px rgba(0,0,0,0.25);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path fill="rgba(255,255,255,0.05)" d="M100 0L120 40L160 50L130 80L140 120L100 100L60 120L70 80L40 50L80 40Z"/><path fill="rgba(255,255,255,0.03)" d="M100 150L115 175L145 180L125 200L95 195L65 200L45 180L75 175Z"/></svg>') repeat;
+            opacity: 0.5;
+            pointer-events: none;
+            animation: floatBg 60s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes floatBg {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(100px, 100px) rotate(360deg); }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        .profile-container {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .profile-card {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: var(--box-shadow-lg);
+            animation: slideUp 0.6s ease-out;
+            transition: var(--transition);
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.3);
+        }
+        
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 35px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.15), transparent);
+            border-radius: 50%;
+            animation: pulse 4s infinite;
+        }
+
+        .profile-header::after {
+            content: '';
+            position: absolute;
+            bottom: -50%;
+            left: -10%;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+            border-radius: 50%;
+            animation: pulse 3s infinite reverse;
+        }
+        
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 40px;
+            cursor: pointer;
+            margin-bottom: 25px;
+            transition: var(--transition);
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-8px);
+            border-color: rgba(255,255,255,0.5);
+        }
+        
+        .profile-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-header h1 i {
+            font-size: 36px;
+            animation: pulse 2s infinite;
+        }
+        
+        .profile-content {
+            padding: 45px;
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 50px;
+        }
+        
+        /* Avatar Section */
+        .profile-avatar-section {
+            text-align: center;
+        }
+        
+        .avatar-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+        
+        .profile-avatar-large {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            border: 4px solid var(--white);
+            object-fit: cover;
+            transition: var(--transition);
+            box-shadow: var(--box-shadow-lg);
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+        }
+        
+        .profile-avatar-large:hover {
+            transform: scale(1.03);
+            box-shadow: 0 25px 40px -12px rgba(0,0,0,0.3);
+        }
+        
+        .change-photo-btn {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            border: 3px solid var(--white);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--box-shadow);
+            font-size: 20px;
+        }
+        
+        .change-photo-btn:hover {
+            transform: scale(1.15) rotate(15deg);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+        }
+        
+        .profile-name {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-top: 15px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .profile-role {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: 12px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        /* Stats Cards */
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 35px;
+            padding-top: 35px;
+            border-top: 2px solid rgba(0,0,0,0.05);
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 18px 12px;
+            background: linear-gradient(135deg, var(--light-color), var(--white));
+            border-radius: 20px;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--box-shadow);
+        }
+
+        .stat-item:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--gray-color);
+            margin-top: 8px;
+            font-weight: 500;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 28px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .form-group label i {
+            margin-right: 10px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            width: 22px;
+        }
+        
+        .profile-input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            font-size: 14px;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+        }
+        
+        .profile-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .profile-input.readonly {
+            background: var(--light-color);
+            cursor: not-allowed;
+            color: var(--gray-color);
+        }
+        
+        .profile-actions {
+            display: flex;
+            gap: 18px;
+            margin-top: 35px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: var(--white);
+            border: none;
+            padding: 14px 28px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px -10px rgba(99, 102, 241, 0.5);
+        }
+        
+        .btn-secondary {
+            background: var(--light-color);
+            color: var(--dark-light);
+            border: 2px solid #e5e7eb;
+            padding: 14px 28px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-secondary:hover {
+            background: #e5e7eb;
+            transform: translateY(-3px);
+            border-color: var(--primary-color);
+        }
+        
+        /* Upload Modal */
+        .upload-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s;
+        }
+        
+        .upload-modal-content {
+            background: var(--white);
+            border-radius: 32px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.3s;
+            box-shadow: var(--box-shadow-lg);
+        }
+        
+        .upload-modal-content h3 {
+            margin-bottom: 20px;
+            color: var(--dark-color);
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .upload-modal-content h3 i {
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+        
+        .upload-preview {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 20px auto;
+            border: 4px solid var(--primary-color);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .upload-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 24px;
+            padding: 40px;
+            margin: 25px 0;
+            cursor: pointer;
+            transition: var(--transition);
+            background: var(--light-color);
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.05);
+            transform: scale(1.02);
+        }
+        
+        .upload-area i {
+            font-size: 56px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 15px;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .modal-buttons button {
+            flex: 1;
+            padding: 14px;
+            border-radius: 16px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 14px;
+        }
+        
+        .btn-confirm {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+        }
+        
+        .btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99,102,241,0.3);
+        }
+        
+        .btn-cancel {
+            background: var(--light-color);
+            color: var(--dark-light);
+            border: 1px solid #e5e7eb;
+        }
+        
+        .btn-cancel:hover {
+            background: #e5e7eb;
+            transform: translateY(-2px);
+        }
+        
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.2);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-text {
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* Toast Notification */
+        .toast-notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 14px 24px;
+            border-radius: 16px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 4000;
+            animation: slideLeft 0.3s ease-out;
+            font-weight: 500;
+            box-shadow: var(--box-shadow-lg);
+            font-size: 14px;
+        }
+        
+        .toast-notification.success { background: linear-gradient(135deg, #10b981, #059669); }
+        .toast-notification.error { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .toast-notification.info { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        
+        @keyframes slideLeft {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 968px) {
+            .profile-container {
+                padding: 20px;
+            }
+            
+            .profile-content {
+                grid-template-columns: 1fr;
+                padding: 30px;
+                gap: 35px;
+            }
+            
+            .profile-avatar-large {
+                width: 180px;
+                height: 180px;
+            }
+            
+            .profile-header h1 {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .profile-stats {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .profile-actions {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .profile-header {
+                padding: 25px;
+            }
+            
+            .profile-content {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-card">
+            <div class="profile-header">
+                <button onclick="window.location.href='dashboard.html'" class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Dashboard
+                </button>
+                <h1>
+                    <i class="fas fa-user-circle"></i> 
+                    Profil Saya
+                </h1>
+            </div>
+            
+            <div class="profile-content">
+                <div class="profile-avatar-section">
+                    <div class="avatar-wrapper">
+                        <img src="" alt="Avatar" id="profileAvatar" class="profile-avatar-large" onerror="this.src='https://ui-avatars.com/api/?background=6366f1&color=fff&bold=true&length=2&name=User'">
+                        <button class="change-photo-btn" id="changePhotoBtn" title="Ganti Foto Profil">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                    </div>
+                    <h2 class="profile-name" id="profileName">Loading...</h2>
+                    <span class="profile-role" id="profileRole">
+                        <i class="fas fa-user-graduate"></i> <span>Loading...</span>
+                    </span>
+                    
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="statLevel">-</div>
+                            <div class="stat-label">Level</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="statPoints">-</div>
+                            <div class="stat-label">Total Poin</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="statBadges">-</div>
+                            <div class="stat-label">Badges</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="profile-form">
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Nama Lengkap</label>
+                        <input type="text" id="fullName" class="profile-input" placeholder="Masukkan nama lengkap">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" id="email" class="profile-input" placeholder="Masukkan email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar"></i> Bergabung Sejak</label>
+                        <input type="text" id="joinedAt" class="profile-input readonly" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-lock"></i> Password Baru (opsional)</label>
+                        <input type="password" id="newPassword" class="profile-input" placeholder="Kosongkan jika tidak ingin mengubah">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-lock"></i> Konfirmasi Password</label>
+                        <input type="password" id="confirmPassword" class="profile-input" placeholder="Ketik ulang password baru">
+                    </div>
+                    
+                    <div class="profile-actions">
+                        <button id="saveProfileBtn" class="btn-primary">
+                            <i class="fas fa-save"></i> Simpan Perubahan
+                        </button>
+                        <button id="cancelProfileBtn" class="btn-secondary">
+                            <i class="fas fa-times"></i> Batal
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Memproses...</div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:3000';
+        let token = localStorage.getItem('token');
+        let currentUser = null;
+        let selectedFile = null;
+        
+        if (!token) {
+            window.location.href = 'index.html';
+        }
+        
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+        
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+        
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `toast-notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        async function loadProfile() {
+            try {
+                showLoading();
+                const response = await fetch(`${API_URL}/api/profile`, {
+                    headers: { 'Authorization': token }
+                });
+                
+                if (!response.ok) throw new Error('Failed to load profile');
+                
+                const user = await response.json();
+                currentUser = user;
+                
+                // Set avatar with cache buster
+                const avatarUrl = user.avatar || `https://ui-avatars.com/api/?background=6366f1&color=fff&bold=true&length=2&name=${encodeURIComponent(user.fullName || 'User')}`;
+                document.getElementById('profileAvatar').src = avatarUrl + '?t=' + Date.now();
+                document.getElementById('profileName').innerText = user.fullName;
+                
+                const roleIcon = user.role === 'teacher' ? 'fa-chalkboard-user' : 'fa-user-graduate';
+                const roleText = user.role === 'teacher' ? 'Guru' : 'Siswa';
+                document.getElementById('profileRole').innerHTML = `<i class="fas ${roleIcon}"></i> <span>${roleText}</span>`;
+                
+                document.getElementById('fullName').value = user.fullName;
+                document.getElementById('email').value = user.email || '';
+                document.getElementById('joinedAt').value = new Date(user.createdAt).toLocaleDateString('id-ID', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                await loadUserStats();
+                hideLoading();
+            } catch (error) {
+                hideLoading();
+                showNotification('Gagal memuat profil', 'error');
+                console.error('Error loading profile:', error);
+            }
+        }
+        
+        async function loadUserStats() {
+            try {
+                const pointsResponse = await fetch(`${API_URL}/api/user/points`, {
+                    headers: { 'Authorization': token }
+                });
+                const pointsData = await pointsResponse.json();
+                
+                document.getElementById('statPoints').innerText = pointsData.totalPoints || 0;
+                document.getElementById('statLevel').innerText = pointsData.level || 1;
+                
+                const badgesResponse = await fetch(`${API_URL}/api/badges`, {
+                    headers: { 'Authorization': token }
+                });
+                const badges = await badgesResponse.json();
+                const earnedBadges = badges.filter(b => b.earned).length;
+                document.getElementById('statBadges').innerText = earnedBadges;
+                
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+        
+        function showUploadModal() {
+            const modal = document.createElement('div');
+            modal.className = 'upload-modal';
+            modal.innerHTML = `
+                <div class="upload-modal-content">
+                    <h3><i class="fas fa-camera"></i> Upload Foto Profil</h3>
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Klik atau drag & drop foto di sini</p>
+                        <small style="color: #64748b; display: block; margin-top: 8px;">Format: JPG, PNG, GIF (Max 2MB)</small>
+                        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/gif,image/jpg" style="display: none;">
+                    </div>
+                    <img id="previewImage" class="upload-preview" style="display: none;">
+                    <div class="modal-buttons">
+                        <button class="btn-confirm" id="confirmUploadBtn">Upload</button>
+                        <button class="btn-cancel" id="cancelUploadBtn">Batal</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            const uploadArea = modal.querySelector('#uploadArea');
+            const fileInput = modal.querySelector('#fileInput');
+            const previewImage = modal.querySelector('#previewImage');
+            const confirmBtn = modal.querySelector('#confirmUploadBtn');
+            const cancelBtn = modal.querySelector('#cancelUploadBtn');
+            
+            uploadArea.addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--primary-color)';
+                uploadArea.style.background = 'rgba(99, 102, 241, 0.05)';
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.borderColor = '#cbd5e1';
+                uploadArea.style.background = 'var(--light-color)';
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    handleFileSelect(file, previewImage, uploadArea);
+                } else {
+                    showNotification('File harus berupa gambar!', 'error');
+                }
+            });
+            
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    handleFileSelect(file, previewImage, uploadArea);
+                }
+            });
+            
+            confirmBtn.addEventListener('click', async () => {
+                if (selectedFile) {
+                    await uploadAvatar(selectedFile);
+                    modal.remove();
+                } else {
+                    showNotification('Pilih foto terlebih dahulu!', 'error');
+                }
+            });
+            
+            cancelBtn.addEventListener('click', () => {
+                modal.remove();
+            });
+        }
+        
+        function handleFileSelect(file, previewImage, uploadArea) {
+            if (!file.type.startsWith('image/')) {
+                showNotification('File harus berupa gambar!', 'error');
+                return;
+            }
+            
+            if (file.size > 2 * 1024 * 1024) {
+                showNotification('Ukuran file maksimal 2MB!', 'error');
+                return;
+            }
+            
+            selectedFile = file;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewImage.src = e.target.result;
+                previewImage.style.display = 'block';
+                uploadArea.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        async function uploadAvatar(file) {
+            const formData = new FormData();
+            formData.append('avatar', file);
+            
+            try {
+                showLoading();
+                const response = await fetch(`${API_URL}/api/upload/avatar`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': token
+                    },
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('profileAvatar').src = data.avatarUrl + '?t=' + Date.now();
+                    
+                    const sidebarAvatar = document.getElementById('sidebarAvatar');
+                    if (sidebarAvatar) {
+                        sidebarAvatar.src = data.avatarUrl + '?t=' + Date.now();
+                    }
+                    
+                    const topBarAvatar = document.getElementById('topBarAvatar');
+                    if (topBarAvatar) {
+                        topBarAvatar.src = data.avatarUrl + '?t=' + Date.now();
+                    }
+                    
+                    showNotification('Foto profil berhasil diubah!', 'success');
+                    selectedFile = null;
+                } else {
+                    showNotification(data.error || 'Gagal mengubah foto profil', 'error');
+                }
+            } catch (error) {
+                console.error('Error uploading avatar:', error);
+                showNotification('Gagal mengubah foto profil. Pastikan server berjalan.', 'error');
+            } finally {
+                hideLoading();
+            }
+        }
+        
+        document.getElementById('changePhotoBtn').addEventListener('click', () => {
+            showUploadModal();
+        });
+        
+        document.getElementById('saveProfileBtn').addEventListener('click', async () => {
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (!fullName) {
+                showNotification('Nama lengkap tidak boleh kosong!', 'error');
+                return;
+            }
+            
+            if (newPassword && newPassword !== confirmPassword) {
+                showNotification('Password baru dan konfirmasi password tidak cocok!', 'error');
+                return;
+            }
+            
+            if (newPassword && newPassword.length < 6) {
+                showNotification('Password minimal 6 karakter!', 'error');
+                return;
+            }
+            
+            showLoading();
+            
+            try {
+                const updateData = { fullName, email };
+                if (newPassword) updateData.password = newPassword;
+                
+                const response = await fetch(`${API_URL}/api/profile`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token
+                    },
+                    body: JSON.stringify(updateData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showNotification('Profil berhasil diperbarui!', 'success');
+                    await loadProfile();
+                    
+                    document.getElementById('newPassword').value = '';
+                    document.getElementById('confirmPassword').value = '';
+                    
+                    const sidebarName = document.getElementById('sidebarName');
+                    if (sidebarName) sidebarName.innerText = fullName;
+                    
+                    const topBarName = document.getElementById('topBarName');
+                    if (topBarName) topBarName.innerText = fullName;
+                    
+                    const welcomeName = document.getElementById('welcomeName');
+                    if (welcomeName) welcomeName.innerText = fullName.split(' ')[0];
+                } else {
+                    showNotification(data.error || 'Gagal memperbarui profil', 'error');
+                }
+            } catch (error) {
+                showNotification('Terjadi kesalahan, silakan coba lagi', 'error');
+                console.error('Error saving profile:', error);
+            } finally {
+                hideLoading();
+            }
+        });
+        
+        document.getElementById('cancelProfileBtn').addEventListener('click', () => {
+            if (confirm('Apakah Anda yakin ingin membatalkan perubahan?')) {
+                window.location.href = 'dashboard.html';
+            }
+        });
+        
+        loadProfile();
+    </script>
+</body>
+</html>

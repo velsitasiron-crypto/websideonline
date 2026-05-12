@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Video Conference - EduClass Meeting</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #1a1a2e;
+            color: white;
+            overflow: hidden;
+        }
+
+        .meeting-container {
+            display: flex;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        /* Video Grid */
+        .video-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            padding: 20px;
+            overflow-y: auto;
+            background: #0f0f1a;
+        }
+
+        .video-card {
+            position: relative;
+            background: #1e1e2e;
+            border-radius: 16px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .video-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .video-card.local {
+            border: 2px solid #4f46e5;
+        }
+
+        .video-element {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #2a2a3a;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .video-placeholder i {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .video-label {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background: rgba(0,0,0,0.7);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+        }
+
+        .video-status {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.7);
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+        }
+
+        .hand-raised {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #f59e0b;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Control Bar */
+        .control-bar {
+            background: #1e1e2e;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            border-top: 1px solid #2a2a3a;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: #2a2a3a;
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-btn:hover {
+            background: #3a3a4a;
+            transform: translateY(-2px);
+        }
+
+        .control-btn.danger {
+            background: #dc2626;
+        }
+
+        .control-btn.danger:hover {
+            background: #b91c1c;
+        }
+
+        .control-btn.success {
+            background: #10b981;
+        }
+
+        .control-btn.warning {
+            background: #f59e0b;
+        }
+
+        .control-btn.active {
+            background: #4f46e5;
+        }
+
+        /* Side Panel */
+        .side-panel {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 350px;
+            height: 100vh;
+            background: #1e1e2e;
+            transform: translateX(100%);
+            transition: transform 0.3s;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .side-panel.open {
+            transform: translateX(0);
+        }
+
+        .panel-header {
+            padding: 16px;
+            border-bottom: 1px solid #2a2a3a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-tabs {
+            display: flex;
+            border-bottom: 1px solid #2a2a3a;
+        }
+
+        .panel-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .panel-tab.active {
+            border-bottom: 2px solid #4f46e5;
+            color: #4f46e5;
+        }
+
+        .panel-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .chat-messages {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        .chat-message {
+            padding: 8px 12px;
+            background: #2a2a3a;
+            border-radius: 12px;
+        }
+
+        .chat-message-user {
+            font-weight: 600;
+            color: #4f46e5;
+            margin-bottom: 4px;
+            font-size: 12px;
+        }
+
+        .chat-message-text {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .chat-message-time {
+            font-size: 10px;
+            color: #6b7280;
+        }
+
+        .chat-input {
+            padding: 16px;
+            border-top: 1px solid #2a2a3a;
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            background: #2a2a3a;
+            border: none;
+            border-radius: 24px;
+            color: white;
+            outline: none;
+        }
+
+        .participant-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .participant-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px;
+            background: #2a2a3a;
+            border-radius: 12px;
+        }
+
+        /* Toggle panel button */
+        .toggle-panel {
+            position: fixed;
+            right: 20px;
+            bottom: 80px;
+            background: #4f46e5;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 99;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+
+        .toggle-panel:hover {
+            transform: scale(1.1);
+        }
+
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #2a2a3a;
+            border-top-color: #4f46e5;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .video-grid {
+                grid-template-columns: 1fr;
+                padding: 10px;
+            }
+
+            .control-btn span {
+                display: none;
+            }
+
+            .control-btn {
+                padding: 12px;
+            }
+
+            .side-panel {
+                width: 100%;
+            }
+        }
+
+        .error-message {
+            background: #dc2626;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 20px;
+            text-align: center;
+        }
+
+        .return-btn {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="meeting-container">
+        <div class="video-grid" id="videoGrid">
+            <div class="video-card local" id="localVideoCard">
+                <video id="localVideo" class="video-element" autoplay playsinline muted></video>
+                <div class="video-label">
+                    <i class="fas fa-user"></i> You
+                </div>
+                <div class="video-status" id="localStatus">
+                    <i class="fas fa-microphone"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-bar">
+            <button class="control-btn" id="toggleMicBtn">
+                <i class="fas fa-microphone"></i>
+                <span>Mic</span>
+            </button>
+            <button class="control-btn" id="toggleVideoBtn">
+                <i class="fas fa-video"></i>
+                <span>Video</span>
+            </button>
+            <button class="control-btn" id="leaveMeetingBtn">
+                <i class="fas fa-phone-slash"></i>
+                <span>Leave</span>
+            </button>
+        </div>
+
+        <div class="toggle-panel" id="togglePanelBtn">
+            <i class="fas fa-comments"></i>
+        </div>
+
+        <div class="side-panel" id="sidePanel">
+            <div class="panel-header">
+                <h4>Meeting Panel</h4>
+                <button class="control-btn" id="closePanelBtn" style="background: none; padding: 0;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="panel-tabs">
+                <div class="panel-tab active" data-tab="chat">Chat</div>
+                <div class="panel-tab" data-tab="participants">Participants</div>
+            </div>
+            <div class="panel-content" id="panelContent">
+                <div class="chat-container" id="chatContainer">
+                    <div class="chat-messages" id="chatMessages"></div>
+                    <div class="chat-input">
+                        <input type="text" id="chatInput" placeholder="Type a message...">
+                        <button class="control-btn" id="sendChatBtn" style="padding: 8px 16px;">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="participant-list" id="participantsContainer" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+        <p>Connecting to meeting...</p>
+        <p id="loadingStatus" style="font-size: 12px; color: #888;">Initializing...</p>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/meeting.js"></script>
+</body>
+</html>

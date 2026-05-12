@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClassRoom - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>ClassRoom</span>
+                    <span class="badge">iron</span>
+                </div>
+            </div>
+            
+            <div class="user-profile-sidebar">
+                <img src="" alt="Avatar" id="sidebarAvatar" class="avatar">
+                <h4 id="sidebarName">Loading...</h4>
+                <p id="sidebarRole"></p>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-tab="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="schedule">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Jadwal</span>
+                    <span class="nav-badge">5</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="attendance">
+                    <i class="fas fa-fingerprint"></i>
+                    <span>Absensi</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="assignments">
+                    <i class="fas fa-tasks"></i>
+                    <span>Tugas</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="quiz">
+                    <i class="fas fa-puzzle-piece"></i>
+                    <span>Quiz</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="resources">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Materi</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="zoom">
+                    <i class="fas fa-video"></i>
+                    <span>Video Conference</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="announcements">
+                    <i class="fas fa-bullhorn"></i>
+                    <span>Pengumuman</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="discussion">
+                    <i class="fas fa-comments"></i>
+                    <span>Diskusi</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="grades">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Nilai</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="gamification">
+                    <i class="fas fa-trophy"></i>
+                    <span>Prestasi</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="pomodoro">
+                    <i class="fas fa-clock"></i>
+                    <span>Timer Belajar</span>
+                </a>
+                <a href="#" class="nav-item" id="profileBtn">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Profil</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Cari materi, tugas, atau diskusi...">
+                </div>
+                <div class="top-bar-actions">
+                    <div class="notifications-dropdown" id="notificationsDropdown">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notificationCount">0</span>
+                        <div class="notifications-panel" id="notificationsPanel">
+                            <div class="notifications-header">
+                                <h4>Notifikasi</h4>
+                                <button id="markAllRead">Tandai semua sudah dibaca</button>
+                            </div>
+                            <div class="notifications-list" id="notificationsList"></div>
+                        </div>
+                    </div>
+                    <div class="user-menu">
+                        <img src="" alt="Avatar" id="topBarAvatar" class="avatar-small">
+                        <span id="topBarName"></span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab Contents -->
+            <div class="content-area">
+                <!-- Dashboard Tab -->
+                <div id="dashboardTab" class="tab-content active">
+                    <div class="welcome-banner animate-slide-up">
+                        <div class="welcome-text">
+                            <h2>Selamat Datang kembali, <span id="welcomeName"></span>!</h2>
+                            <p>Semangat belajar hari ini! 🚀</p>
+                        </div>
+                        <div class="welcome-stats" id="dashboardStats"></div>
+                    </div>
+                    
+                    <div class="stats-grid" id="statsGrid"></div>
+                    
+                    <div class="dashboard-sections">
+                        <div class="recent-activities">
+                            <h3><i class="fas fa-history"></i> Aktivitas Terbaru</h3>
+                            <div id="recentActivities"></div>
+                        </div>
+                        <div class="upcoming-tasks">
+                            <h3><i class="fas fa-clock"></i> Tugas Mendatang</h3>
+                            <div id="upcomingTasks"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Schedule Tab -->
+                <div id="scheduleTab" class="tab-content">
+                    <div class="tab-header">
+                        <h2><i class="fas fa-calendar-week"></i> Jadwal Pelajaran</h2>
+                        <div class="view-controls">
+                            <button class="view-btn active" data-view="grid"><i class="fas fa-th"></i></button>
+                            <button class="view-btn" data-view="list"><i class="fas fa-list"></i></button>
+                        </div>
+                    </div>
+                    <div id="scheduleContainer" class="schedule-container"></div>
+                </div>
+                
+                <!-- Attendance Tab -->
+                <div id="attendanceTab" class="tab-content">
+                    <h2><i class="fas fa-check-circle"></i> Absensi Harian</h2>
+                    <div class="attendance-summary">
+                        <div class="attendance-stats-card">
+                            <canvas id="attendanceChart"></canvas>
+                        </div>
+                    </div>
+                    <div id="attendanceList" class="attendance-list"></div>
+                </div>
+                
+                <!-- Assignments Tab -->
+                <div id="assignmentsTab" class="tab-content">
+                    <div class="tab-header">
+                        <h2><i class="fas fa-file-alt"></i> Ruang Tugas</h2>
+                        <button id="showCreateAssignmentBtn" class="btn-primary" style="display:none">
+                            <i class="fas fa-plus"></i> Buat Tugas Baru
+                        </button>
+                    </div>
+                    <div class="assignment-filters">
+                        <button class="filter-btn active" data-filter="all">Semua</button>
+                        <button class="filter-btn" data-filter="active">Aktif</button>
+                        <button class="filter-btn" data-filter="completed">Selesai</button>
+                    </div>
+                    <div id="assignmentList" class="assignment-list"></div>
+                </div>
+                
+                <!-- Quiz Tab -->
+                <div id="quizTab" class="tab-content">
+                    <div class="tab-header">
+                        <h2><i class="fas fa-puzzle-piece"></i> Quiz & Assessment</h2>
+                        <button id="viewQuizHistoryBtn" class="btn-secondary" style="display:none">
+                            <i class="fas fa-history"></i> Riwayat Quiz
+                        </button>
+                    </div>
+                    <div class="quiz-stats-summary" id="quizStatsSummary">
+                        <div class="stat-card-mini">
+                            <i class="fas fa-chart-line"></i>
+                            <div>
+                                <h4 id="avgQuizScore">0%</h4>
+                                <p>Rata-rata Nilai</p>
+                            </div>
+                        </div>
+                        <div class="stat-card-mini">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <h4 id="completedQuizzes">0</h4>
+                                <p>Quiz Selesai</p>
+                            </div>
+                        </div>
+                        <div class="stat-card-mini">
+                            <i class="fas fa-star"></i>
+                            <div>
+                                <h4 id="quizPoints">0</h4>
+                                <p>Poin Quiz</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="quizList" class="quiz-list"></div>
+                </div>
+                
+                <!-- Resources Tab -->
+                <div id="resourcesTab" class="tab-content">
+                    <div class="tab-header">
+                        <h2><i class="fas fa-folder-open"></i> Resource Library</h2>
+                        <button id="uploadResourceBtn" class="btn-primary" style="display:none">
+                            <i class="fas fa-upload"></i> Upload Materi
+                        </button>
+                    </div>
+                    <div class="resource-filters">
+                        <button class="filter-btn active" data-resource="all">Semua</button>
+                        <button class="filter-btn" data-resource="pdf">PDF</button>
+                        <button class="filter-btn" data-resource="video">Video</button>
+                        <button class="filter-btn" data-resource="link">Link</button>
+                    </div>
+                    <div id="resourcesList" class="resources-list"></div>
+                </div>
+                
+                <!-- Video Conference Tab -->
+                <div id="zoomTab" class="tab-content">
+                    <h2><i class="fas fa-chalkboard"></i> Video Conference</h2>
+                    <div class="zoom-container">
+                        <div class="upcoming-meetings">
+                            <h3>Meeting Mendatang</h3>
+                            <div id="upcomingMeetings"></div>
+                        </div>
+                        <div class="zoom-info-card">
+                            <i class="fas fa-info-circle"></i>
+                            <p>Klik "Join Meeting" pada jadwal pelajaran untuk bergabung ke video conference</p>
+                            <p style="margin-top: 10px; font-size: 12px;">✅ Fitur: Video Call, Audio, Chat, Raise Hand</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Announcements Tab -->
+                <div id="announcementsTab" class="tab-content">
+                    <div class="tab-header">
+                        <h2><i class="fas fa-bullhorn"></i> Pengumuman</h2>
+                        <button id="createAnnouncementBtn" class="btn-primary" style="display:none">
+                            <i class="fas fa-plus"></i> Buat Pengumuman
+                        </button>
+                    </div>
+                    <div id="announcementsList"></div>
+                </div>
+                
+                <!-- Discussion Tab -->
+                <div id="discussionTab" class="tab-content">
+                    <h2><i class="fas fa-comments"></i> Forum Diskusi</h2>
+                    <div class="discussion-container">
+                        <div class="discussion-sidebar">
+                            <button id="newDiscussionBtn" class="btn-primary">
+                                <i class="fas fa-plus"></i> Topik Baru
+                            </button>
+                            <div id="discussionList" class="discussion-list"></div>
+                        </div>
+                        <div class="discussion-chat" id="discussionChat">
+                            <div class="chat-header" id="chatHeader">Pilih topik diskusi</div>
+                            <div class="chat-messages" id="discussionChatMessages"></div>
+                            <div class="chat-input" id="chatInputArea" style="display:none">
+                                <input type="text" id="messageInput" placeholder="Tulis pesan...">
+                                <button id="sendMessageBtn"><i class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Grades Tab -->
+                <div id="gradesTab" class="tab-content">
+                    <h2><i class="fas fa-chart-line"></i> Nilai & Progress</h2>
+                    <div id="gradesContent"></div>
+                </div>
+                
+                <!-- Gamification Tab -->
+                <div id="gamificationTab" class="tab-content">
+                    <div class="gamification-header">
+                        <div class="points-card">
+                            <i class="fas fa-star"></i>
+                            <div>
+                                <h3 id="totalPoints">0</h3>
+                                <p>Total Points</p>
+                            </div>
+                        </div>
+                        <div class="level-card">
+                            <i class="fas fa-chart-line"></i>
+                            <div>
+                                <h3 id="userLevel">Level 1</h3>
+                                <div class="level-progress">
+                                    <div class="level-progress-fill" id="levelProgress"></div>
+                                </div>
+                                <p id="nextLevelInfo">0 / 500 menuju Level 2</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="badges-section">
+                        <h3><i class="fas fa-medal"></i> Badges yang Diperoleh</h3>
+                        <div id="badgesList" class="badges-grid"></div>
+                    </div>
+                    <div class="leaderboard-section">
+                        <h3><i class="fas fa-ranking-star"></i> Leaderboard</h3>
+                        <div id="leaderboardList" class="leaderboard-list"></div>
+                    </div>
+                </div>
+                
+                <!-- Pomodoro Tab -->
+                <div id="pomodoroTab" class="tab-content">
+                    <div class="pomodoro-container">
+                        <div class="timer-circle">
+                            <div class="timer-display" id="timerDisplay">25:00</div>
+                            <div class="timer-label" id="timerLabel">Waktu Belajar</div>
+                        </div>
+                        <div class="timer-controls">
+                            <button id="startTimer" class="btn-primary"><i class="fas fa-play"></i> Mulai</button>
+                            <button id="pauseTimer" class="btn-secondary"><i class="fas fa-pause"></i> Jeda</button>
+                            <button id="resetTimer" class="btn-secondary"><i class="fas fa-redo"></i> Reset</button>
+                        </div>
+                        <div class="session-stats">
+                            <div class="stat">
+                                <span class="stat-value" id="studySessions">0</span>
+                                <span class="stat-label">Sesi Belajar</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value" id="totalStudyTime">0</span>
+                                <span class="stat-label">Menit Belajar</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value" id="earnedPoints">0</span>
+                                <span class="stat-label">Poin Diperoleh</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal untuk create assignment -->
+    <div id="assignmentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Buat Tugas Baru</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="newTitle" placeholder="Judul Tugas">
+                <textarea id="newDesc" placeholder="Deskripsi tugas" rows="4"></textarea>
+                <input type="date" id="newDeadline">
+                <input type="number" id="newMaxScore" placeholder="Nilai maksimal" value="100">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancelAssignment">Batal</button>
+                <button class="btn-primary" id="confirmCreateAssignment">Buat Tugas</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal untuk create announcement -->
+    <div id="announcementModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Buat Pengumuman</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="announcementTitle" placeholder="Judul Pengumuman">
+                <textarea id="announcementContent" placeholder="Isi pengumuman" rows="5"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancelAnnouncement">Batal</button>
+                <button class="btn-primary" id="confirmCreateAnnouncement">Publikasikan</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal untuk submit tugas -->
+    <div id="submitModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Kumpulkan Tugas</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="file-upload-area" id="fileUploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Drag & drop file atau klik untuk upload</p>
+                    <input type="file" id="assignmentFile" accept=".pdf,.doc,.docx,.jpg,.png">
+                </div>
+                <textarea id="submissionNotes" placeholder="Catatan (opsional)" rows="3"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancelSubmit">Batal</button>
+                <button class="btn-primary" id="confirmSubmit">Kumpulkan</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal untuk create discussion -->
+    <div id="discussionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Buat Topik Diskusi Baru</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="discussionTopic" placeholder="Judul Topik Diskusi">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancelDiscussion">Batal</button>
+                <button class="btn-primary" id="confirmCreateDiscussion">Buat Topik</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal untuk upload resource (teacher only) -->
+    <div id="uploadResourceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Upload Materi Baru</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="resourceTitle" placeholder="Judul Materi">
+                <textarea id="resourceDesc" placeholder="Deskripsi" rows="3"></textarea>
+                <select id="resourceSubject">
+                    <option value="Matematika">Matematika</option>
+                    <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+                    <option value="Fisika">Fisika</option>
+                    <option value="Kimia">Kimia</option>
+                    <option value="Biologi">Biologi</option>
+                </select>
+                <select id="resourceType">
+                    <option value="pdf">PDF</option>
+                    <option value="video">Video</option>
+                    <option value="link">Link</option>
+                </select>
+                <input type="text" id="resourceUrl" placeholder="URL / Link Materi">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancelUpload">Batal</button>
+                <button class="btn-primary" id="confirmUpload">Upload</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal untuk quiz result -->
+    <div id="quizResultModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Hasil Quiz</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="quizResultBody">
+                <div class="quiz-result-score">
+                    <div class="score-circle" id="scoreCircle">
+                        <span id="finalScore">0</span>
+                        <span>%</span>
+                    </div>
+                </div>
+                <div class="quiz-result-details">
+                    <p id="resultMessage"></p>
+                    <p id="pointsEarned"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" id="closeQuizResult">Tutup</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "guru",
+      "email": "guru@educlass.com",
+      "password": "$2a$10$CVypybJWCq74e9EgrDfo4OYkA4JTTTUklG14TsbQ.A/0Zrs8dC/m2",
+      "role": "teacher",
+      "fullName": "drs.ir.velsitas iron.S.kom.M",
+      "avatar": "/uploads/avatars/avatar-1-1778562964448.jpg",
+      "createdAt": "2026-05-12T03:39:20.311Z"
+    },
+    {
+      "id": 2,
+      "username": "siswa1",
+      "email": "siswa1@educlass.com",
+      "password": "$2a$10$jf3hfmm0wMuPK9b60Uw1Ue9S67IgPttzQoTOMqWouGLhW9VkaCSXa",
+      "role": "student",
+      "fullName": "iron velsitas",
+      "avatar": "/uploads/avatars/avatar-2-1778562910873.jpg",
+      "createdAt": "2026-05-12T03:39:20.398Z"
+    },
+    {
+      "id": 3,
+      "username": "siswa2",
+      "email": "siswa2@educlass.com",
+      "password": "$2a$10$2qKFruSgCypeibVltk2fhuqb08IlkzXfckFTM/L3ea33tNuLBbJUK",
+      "role": "student",
+      "fullName": "Bambang Prasetyo",
+      "avatar": "https://randomuser.me/api/portraits/men/2.jpg",
+      "createdAt": "2026-05-12T03:39:20.489Z"
+    }
+  ],
+  "attendances": [
+    {
+      "userId": 2,
+      "userName": "siswa1",
+      "scheduleId": 1,
+      "status": "Hadir",
+      "notes": "",
+      "date": "2026-05-12",
+      "updatedAt": "2026-05-12T04:47:44.798Z",
+      "id": 1,
+      "createdAt": "2026-05-12T04:47:39.627Z"
+    }
+  ],
+  "assignments": [
+    {
+      "id": 1,
+      "title": "Tugas Matematika - Persamaan Linear",
+      "description": "Kerjakan soal di halaman 10-15. Tulis dengan rapi di kertas kemudian upload dalam format PDF.",
+      "deadline": "2026-05-20",
+      "maxScore": 100,
+      "submissions": [],
+      "createdAt": "2026-05-12T03:39:20.489Z"
+    },
+    {
+      "id": 2,
+      "title": "Essay Bahasa Indonesia",
+      "description": "Buat essay tentang pentingnya literasi di era digital. Minimal 500 kata.",
+      "deadline": "2026-05-22",
+      "maxScore": 100,
+      "submissions": [],
+      "createdAt": "2026-05-12T03:39:20.489Z"
+    },
+    {
+      "id": 3,
+      "title": "Praktikum Fisika",
+      "description": "Laporan praktikum gerak parabola. Sertakan data dan analisis.",
+      "deadline": "2026-05-25",
+      "maxScore": 100,
+      "submissions": [],
+      "createdAt": "2026-05-12T03:39:20.489Z"
+    }
+  ],
+  "schedules": [
+    {
+      "id": 1,
+      "day": "Senin",
+      "subject": "Matematika",
+      "time": "08:00-09:30",
+      "zoomLink": "https://zoom.us/j/123456",
+      "room": "A101",
+      "teacher": "Budi Santoso",
+      "meetingId": "123456",
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "day": "Selasa",
+      "subject": "Bahasa Indonesia",
+      "time": "10:00-11:30",
+      "zoomLink": "https://zoom.us/j/789012",
+      "room": "B202",
+      "teacher": "Siti Aminah",
+      "meetingId": "789012",
+      "isActive": true
+    },
+    {
+      "id": 3,
+      "day": "Rabu",
+      "subject": "Fisika",
+      "time": "13:00-14:30",
+      "zoomLink": "https://zoom.us/j/345678",
+      "room": "C303",
+      "teacher": "Drs. Rahmat",
+      "meetingId": "345678"
+    },
+    {
+      "id": 4,
+      "day": "Kamis",
+      "subject": "Kimia",
+      "time": "09:00-10:30",
+      "zoomLink": "https://zoom.us/j/901234",
+      "room": "D404",
+      "teacher": "Dr. Dewi",
+      "meetingId": "901234"
+    },
+    {
+      "id": 5,
+      "day": "Jumat",
+      "subject": "Biologi",
+      "time": "11:00-12:30",
+      "zoomLink": "https://zoom.us/j/567890",
+      "room": "E505",
+      "teacher": "Prof. Ahmad",
+      "meetingId": "567890",
+      "isActive": true
+    }
+  ],
+  "announcements": [
+    {
+      "id": 1,
+      "title": "Selamat Datang di Semester Baru",
+      "content": "Semester baru dimulai! Persiapkan diri kalian untuk belajar dengan giat.",
+      "date": "2026-05-12",
+      "author": "Admin"
+    },
+    {
+      "id": 2,
+      "title": "Info UTS",
+      "content": "UTS akan dilaksanakan pada minggu depan. Silakan persiapkan diri.",
+      "date": "2026-05-12",
+      "author": "Budi Santoso"
+    }
+  ],
+  "discussions": [
+    {
+      "id": 1,
+      "topic": "Diskusi Materi Matematika",
+      "messages": [
+        {
+          "user": "guru",
+          "message": "Ada yang kurang paham tentang persamaan linear?",
+          "time": "5/12/2026, 10:39:20 AM"
+        },
+        {
+          "user": "guru",
+          "message": "ada pak",
+          "time": "5/12/2026, 10:43:03 AM"
+        },
+        {
+          "user": "guru",
+          "message": "halo",
+          "time": "5/12/2026, 10:43:12 AM"
+        }
+      ],
+      "createdBy": "guru",
+      "createdAt": "2026-05-12T03:39:20.508Z"
+    },
+    {
+      "id": 2,
+      "topic": "Tanya Jawab UTS",
+      "messages": [
+        {
+          "user": "siswa1",
+          "message": "Kapan jadwal UTS?",
+          "time": "5/12/2026, 10:39:20 AM"
+        }
+      ],
+      "createdBy": "siswa1",
+      "createdAt": "2026-05-12T03:39:20.508Z"
+    },
+    {
+      "id": 3,
+      "topic": "covid19",
+      "messages": [],
+      "createdBy": "guru",
+      "createdAt": "2026-05-12T04:46:34.334Z"
+    }
+  ],
+  "grades": [],
+  "notifications": [],
+  "chats": []
+}
